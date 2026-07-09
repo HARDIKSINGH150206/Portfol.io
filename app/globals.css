@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #030303;
+  --card: #070707;
+  --card-hover: #0a0a0a;
+  --border: #242424;
+  --accent-border: #7c6dff;
+  --text-main: #ffffff;
+  --text-secondary: #b5b5c3;
+  --text-muted: #71717a;
+  --accent: #8b7cff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--text-main);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  overflow-x: hidden;
+}
+
+* {
+  border-color: var(--border);
+}
+
+::selection {
+  background: rgba(139, 124, 255, 0.35);
+  color: #ffffff;
+}
+
+@layer base {
+  body {
+    @apply min-h-screen bg-background text-text-main antialiased;
+  }
+
+  a,
+  button,
+  input,
+  textarea {
+    @apply outline-none;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    @apply ring-2 ring-accent ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-content px-5 sm:px-6 lg:px-8;
+  }
+
+  .section-shell {
+    @apply py-24 sm:py-28;
+  }
+
+  .surface-card {
+    @apply rounded-3xl border border-border bg-card transition duration-300 hover:-translate-y-1 hover:border-accent-border hover:bg-card-hover hover:shadow-glow;
+  }
+
+  .muted-copy {
+    @apply text-sm leading-7 text-text-secondary;
+  }
+
+  .input-shell {
+    @apply w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm text-white placeholder:text-text-muted transition focus:border-accent-border;
+  }
+
+  .status-card {
+    @apply surface-card p-8;
+  }
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 1.5rem;
+  background: #050505;
+}
