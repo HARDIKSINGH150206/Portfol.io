@@ -1,7 +1,6 @@
 import { Download, ExternalLink, FileText } from "lucide-react";
 import fs from "node:fs";
 import path from "node:path";
-import SectionHeader from "./SectionHeader";
 
 export default function Resume() {
   const resumePath = path.join(process.cwd(), "public", "resume.pdf");

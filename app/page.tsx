@@ -30,7 +30,7 @@ export default function HomePage() {
       />
       <Hackathons />
       <Resume />
-      <Contact githubUsername={githubUsername} />
+      <Contact />
       <Footer />
     </main>
   );

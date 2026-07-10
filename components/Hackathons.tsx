@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SectionHeader from "./SectionHeader";
 
 const achievements = [
   {
