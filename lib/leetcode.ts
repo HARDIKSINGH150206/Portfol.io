@@ -1,39 +1,81 @@
 import { LeetCodeStats } from "./types";
 
-const LEETCODE_API_URL = "https://leetcode.com/graphql/";
+const LEETCODE_GRAPHQL_URL = "https://leetcode.com/graphql";
 
-type LeetCodeQueryResult = {
-  matchedUser: {
-    submitStatsGlobal: {
-      acSubmissionNum: Array<{
-        difficulty: string;
-        count: number;
-      }>;
-    };
-  } | null;
+type LeetCodeSubmissionStat = {
+  difficulty: "All" | "Easy" | "Medium" | "Hard";
+  count: number;
+  submissions: number;
 };
 
-export async function getLeetCodeStats() {
+type LeetCodeGraphQLResponse = {
+  data?: {
+    matchedUser: {
+      username: string;
+      submitStats: {
+        acSubmissionNum: LeetCodeSubmissionStat[];
+      };
+      userCalendar: {
+        streak: number;
+        totalActiveDays: number;
+        submissionCalendar: string | null;
+      } | null;
+    } | null;
+  };
+  errors?: Array<{ message: string }>;
+};
+
+function getLeetCodeUsername() {
   const username = process.env.LEETCODE_USERNAME;
 
   if (!username) {
-    throw new Error("Missing LeetCode username.");
+    throw new Error("Missing LEETCODE_USERNAME environment variable.");
   }
 
+  return username;
+}
+
+function parseLeetCodeCalendar(submissionCalendar?: string | null) {
+  if (!submissionCalendar) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(submissionCalendar) as Record<string, number>;
+
+    return Object.entries(parsed).map(([timestamp, count]) => ({
+      date: new Date(Number(timestamp) * 1000).toISOString().slice(0, 10),
+      count: Number(count),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function getLeetCodeStats(): Promise<LeetCodeStats> {
+  const username = getLeetCodeUsername();
+
   const query = `
-    query userProfile($username: String!) {
+    query userProfileCalendar($username: String!) {
       matchedUser(username: $username) {
-        submitStatsGlobal {
+        username
+        submitStats {
           acSubmissionNum {
             difficulty
             count
+            submissions
           }
+        }
+        userCalendar {
+          streak
+          totalActiveDays
+          submissionCalendar
         }
       }
     }
   `;
 
-  const response = await fetch(LEETCODE_API_URL, {
+  const response = await fetch(LEETCODE_GRAPHQL_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,31 +83,51 @@ export async function getLeetCodeStats() {
     },
     body: JSON.stringify({
       query,
-      variables: { username },
+      variables: {
+        username,
+      },
     }),
-    next: { revalidate: 3600 },
+    next: {
+      revalidate: 3600,
+    },
   });
 
   if (!response.ok) {
-    throw new Error(`LeetCode API request failed with ${response.status}.`);
+    throw new Error(`LeetCode request failed with ${response.status}.`);
   }
 
-  const payload = (await response.json()) as { data?: LeetCodeQueryResult };
-  const stats = payload.data?.matchedUser?.submitStatsGlobal.acSubmissionNum;
+  const payload = (await response.json()) as LeetCodeGraphQLResponse;
 
-  if (!stats) {
-    throw new Error("LeetCode stats temporarily unavailable.");
+  if (payload.errors?.length) {
+    throw new Error(
+      payload.errors[0]?.message ?? "LeetCode returned an error.",
+    );
   }
 
-  const lookup = Object.fromEntries(stats.map((entry) => [entry.difficulty, entry.count]));
+  const matchedUser = payload.data?.matchedUser;
 
-  const result: LeetCodeStats = {
-    totalSolved: lookup.All ?? 0,
-    easySolved: lookup.Easy ?? 0,
-    mediumSolved: lookup.Medium ?? 0,
-    hardSolved: lookup.Hard ?? 0,
-    streak: 0,
+  if (!matchedUser) {
+    throw new Error("LeetCode user not found.");
+  }
+
+  const stats = matchedUser.submitStats.acSubmissionNum;
+
+  const all = stats.find((item) => item.difficulty === "All");
+  const easy = stats.find((item) => item.difficulty === "Easy");
+  const medium = stats.find((item) => item.difficulty === "Medium");
+  const hard = stats.find((item) => item.difficulty === "Hard");
+
+  const days = parseLeetCodeCalendar(
+    matchedUser.userCalendar?.submissionCalendar,
+  );
+
+  return {
+    totalSolved: all?.count ?? 0,
+    easySolved: easy?.count ?? 0,
+    mediumSolved: medium?.count ?? 0,
+    hardSolved: hard?.count ?? 0,
+    streak: matchedUser.userCalendar?.streak ?? null,
+    activeDays: matchedUser.userCalendar?.totalActiveDays ?? 0,
+    days,
   };
-
-  return result;
 }

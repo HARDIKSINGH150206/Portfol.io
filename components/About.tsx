@@ -44,7 +44,7 @@ export default function About() {
                 About
               </span>
               <div className="space-y-3">
-                <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-tight tracking-tight text-white">
                   Technical execution with product discipline.
                 </h2>
                 <p className="max-w-2xl text-base leading-8 text-zinc-300 sm:text-lg">

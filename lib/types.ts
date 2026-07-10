@@ -21,11 +21,17 @@ export type GitHubRepositoryLanguage = {
   percentage: number;
 };
 
+export type ActivityDay = {
+  date: string;
+  count: number;
+};
+
 export type GitHubContributionStats = {
   totalContributions: number;
   currentStreak: number;
   longestStreak: number;
   activeDays: number;
+  days: ActivityDay[];
 };
 
 export type LeetCodeStats = {
@@ -33,6 +39,7 @@ export type LeetCodeStats = {
   easySolved: number;
   mediumSolved: number;
   hardSolved: number;
-  streak: number;
+  streak?: number | null;
+  activeDays?: number;
+  days?: ActivityDay[];
 };
-

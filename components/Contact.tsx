@@ -1,292 +1,166 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail } from "lucide-react";
-import { ChangeEvent, FormEvent, useMemo, useState } from "react";
-import SectionHeader from "./SectionHeader";
-
-const DynamicLocationMap = dynamic(() => import("./LocationMap"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-[320px] items-center justify-center rounded-3xl border border-border bg-card text-sm text-text-muted">
-      Loading map...
-    </div>
-  ),
-});
-
-type ContactProps = {
-  githubUsername: string;
-};
+import { FormEvent, useState } from "react";
+import {
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconMail,
+  IconSend,
+} from "@tabler/icons-react";
+import DottedLocationMap from "./DottedLocationMap";
 
 type FormState = {
-  fullName: string;
+  name: string;
   email: string;
   subject: string;
   message: string;
 };
 
-const initialState: FormState = {
-  fullName: "",
+const initialFormState: FormState = {
+  name: "",
   email: "",
   subject: "",
   message: "",
 };
 
-export default function Contact({ githubUsername }: ContactProps) {
-  const [form, setForm] = useState<FormState>(initialState);
-  const [errors, setErrors] = useState<Partial<FormState>>({});
-  const [submitted, setSubmitted] = useState(false);
+export default function Contact() {
+  const [form, setForm] = useState<FormState>(initialFormState);
+  const [status, setStatus] = useState("");
 
-  const socials = useMemo(
-    () => [
-      {
-        label: "Email",
-        value: "hardik.singh@example.com",
-        href: "mailto:hardik.singh@example.com",
-        icon: Mail,
-      },
-      {
-        label: "GitHub",
-        value: `github.com/${githubUsername}`,
-        href: `https://github.com/${githubUsername}`,
-        icon: Github,
-      },
-      {
-        label: "LinkedIn",
-        value: "linkedin.com/in/hardik-singh",
-        href: "https://www.linkedin.com/in/hardik-singh/",
-        icon: Linkedin,
-      },
-    ],
-    [githubUsername],
-  );
+  const updateField = (field: keyof FormState, value: string) => {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  };
 
-  function validate(values: FormState) {
-    const nextErrors: Partial<FormState> = {};
-
-    if (!values.fullName.trim()) nextErrors.fullName = "Full name is required.";
-    if (!values.email.trim()) {
-      nextErrors.email = "Email address is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-      nextErrors.email = "Enter a valid email address.";
-    }
-    if (!values.subject.trim()) nextErrors.subject = "Subject is required.";
-    if (!values.message.trim()) nextErrors.message = "Message is required.";
-
-    return nextErrors;
-  }
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const nextErrors = validate(form);
 
-    if (Object.keys(nextErrors).length > 0) {
-      setErrors(nextErrors);
-      setSubmitted(false);
+    if (!form.name || !form.email || !form.subject || !form.message) {
+      setStatus("Please fill all fields.");
       return;
     }
 
-    setErrors({});
-    setSubmitted(true);
-    setForm(initialState);
-  }
-
-  function handleChange(
-    key: keyof FormState,
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) {
-    setForm((current) => ({ ...current, [key]: event.target.value }));
-    setSubmitted(false);
-    setErrors((current) => {
-      if (!current[key]) {
-        return current;
-      }
-
-      return { ...current, [key]: undefined };
-    });
-  }
+    setStatus("Message ready. Email sending can be connected later.");
+    setForm(initialFormState);
+  };
 
   return (
-    <section id="contact" className="section-shell">
-      <div className="container-shell">
-        <SectionHeader
-          eyebrow="Contact"
-          title="Open to product, platform, and AI-focused opportunities."
-          description="The contact flow is intentionally simple for the MVP: validated form fields, clean feedback, and a privacy-safe optional location map."
-        />
+    <section id="contact" className="bg-black px-6 py-20 sm:px-8 lg:px-10">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1fr] lg:items-start">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">
+            Contact
+          </p>
+          <h2 className="mt-5 max-w-xl text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
+            Let&apos;s build something useful.
+          </h2>
 
-        <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            className="surface-card p-8"
-          >
-            <div className="flex items-start gap-4">
-              <div className="rounded-2xl border border-border p-3 text-accent">
-                <Mail size={20} />
-              </div>
-              <div className="space-y-3">
-                <h3 className="text-2xl font-semibold text-white">Let&apos;s talk.</h3>
-                <p className="muted-copy">
-                  For internships, product builds, hackathons, or engineering
-                  collaboration, use the form or reach out directly through the
-                  channels below.
-                </p>
-              </div>
-            </div>
+          <p className="mt-5 max-w-xl text-base leading-8 text-zinc-400">
+            I&apos;m open to collaborations, internships, hackathons, and
+            product-focused engineering opportunities.
+          </p>
 
-            <div className="mt-8 grid gap-3">
-              {socials.map((item) => {
-                const Icon = item.icon;
+          <div className="mt-7 space-y-3 text-sm text-zinc-400">
+            <a
+              href="mailto:hardikn.24.becs@acharya.ac.in"
+              className="flex items-center gap-3 transition hover:text-white"
+            >
+              <IconMail className="h-4 w-4 text-violet-400" />
+              hardikn.24.becs@acharya.ac.in
+            </a>
 
-                return (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target={item.href.startsWith("http") ? "_blank" : undefined}
-                    rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="rounded-2xl border border-border p-4 transition hover:border-accent-border hover:bg-card-hover"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon size={18} className="text-accent" />
-                      <div>
-                        <p className="text-sm font-medium text-white">{item.label}</p>
-                        <p className="text-sm text-text-secondary">{item.value}</p>
-                      </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
+            <a
+              href="https://github.com/HARDIKSINGH150206"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-3 transition hover:text-white"
+            >
+              <IconBrandGithub className="h-4 w-4 text-violet-400" />
+              github.com/HARDIKSINGH150206
+            </a>
 
-            <div className="mt-8">
-              <DynamicLocationMap />
-            </div>
-          </motion.div>
+            <a
+              href="https://www.linkedin.com/in/hardik-singh-/"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-3 transition hover:text-white"
+            >
+              <IconBrandLinkedin className="h-4 w-4 text-violet-400" />
+              linkedin.com/in/hardik-singh-
+            </a>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.45, delay: 0.08, ease: "easeOut" }}
-            className="surface-card p-8"
-          >
-            <h3 className="text-2xl font-semibold text-white">Send a message</h3>
-            <p className="mt-3 muted-copy">
-              Form submission is frontend-only for the MVP. It validates input and
-              shows success feedback without storing data or sending email yet.
-            </p>
-
-            <form className="mt-8 space-y-5" onSubmit={handleSubmit} noValidate>
-              <div>
-                <label htmlFor="fullName" className="mb-2 block text-sm text-white">
-                  Full name
-                </label>
-                <input
-                  id="fullName"
-                  name="fullName"
-                  value={form.fullName}
-                  autoComplete="name"
-                  aria-invalid={Boolean(errors.fullName)}
-                  aria-describedby={errors.fullName ? "fullName-error" : undefined}
-                  onChange={(event) => handleChange("fullName", event)}
-                  className="input-shell"
-                  placeholder="Your full name"
-                />
-                {errors.fullName ? (
-                  <p id="fullName-error" className="mt-2 text-sm text-text-muted">
-                    {errors.fullName}
-                  </p>
-                ) : null}
-              </div>
-
-              <div>
-                <label htmlFor="email" className="mb-2 block text-sm text-white">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  autoComplete="email"
-                  inputMode="email"
-                  aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  onChange={(event) => handleChange("email", event)}
-                  className="input-shell"
-                  placeholder="you@example.com"
-                />
-                {errors.email ? (
-                  <p id="email-error" className="mt-2 text-sm text-text-muted">
-                    {errors.email}
-                  </p>
-                ) : null}
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="mb-2 block text-sm text-white">
-                  Subject
-                </label>
-                <input
-                  id="subject"
-                  name="subject"
-                  value={form.subject}
-                  autoComplete="off"
-                  aria-invalid={Boolean(errors.subject)}
-                  aria-describedby={errors.subject ? "subject-error" : undefined}
-                  onChange={(event) => handleChange("subject", event)}
-                  className="input-shell"
-                  placeholder="How can I help?"
-                />
-                {errors.subject ? (
-                  <p id="subject-error" className="mt-2 text-sm text-text-muted">
-                    {errors.subject}
-                  </p>
-                ) : null}
-              </div>
-
-              <div>
-                <label htmlFor="message" className="mb-2 block text-sm text-white">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  value={form.message}
-                  autoComplete="off"
-                  aria-invalid={Boolean(errors.message)}
-                  aria-describedby={errors.message ? "message-error" : undefined}
-                  onChange={(event) => handleChange("message", event)}
-                  className="input-shell resize-y"
-                  placeholder="Share the context, role, or project."
-                />
-                {errors.message ? (
-                  <p id="message-error" className="mt-2 text-sm text-text-muted">
-                    {errors.message}
-                  </p>
-                ) : null}
-              </div>
-
-              <button
-                type="submit"
-                className="rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:bg-white/90"
-              >
-                Submit
-              </button>
-
-              {submitted ? (
-                <p className="text-sm text-text-secondary" role="status" aria-live="polite">
-                  Message submitted successfully for the MVP flow.
-                </p>
-              ) : null}
-            </form>
-          </motion.div>
+          <DottedLocationMap />
         </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="grid gap-5 rounded-3xl bg-zinc-950/30 p-6 md:p-8"
+        >
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400">
+              Full name
+            </label>
+            <input
+              value={form.name}
+              onChange={(event) => updateField("name", event.target.value)}
+              placeholder="Your full name"
+              className="h-12 w-full rounded-xl bg-zinc-900/70 px-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:ring-1 focus:ring-violet-400/60"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400">
+              Email address
+            </label>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(event) => updateField("email", event.target.value)}
+              placeholder="you@example.com"
+              className="h-12 w-full rounded-xl bg-zinc-900/70 px-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:ring-1 focus:ring-violet-400/60"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400">
+              Subject / Company
+            </label>
+            <input
+              value={form.subject}
+              onChange={(event) => updateField("subject", event.target.value)}
+              placeholder="What’s this regarding?"
+              className="h-12 w-full rounded-xl bg-zinc-900/70 px-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:ring-1 focus:ring-violet-400/60"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400">
+              Message
+            </label>
+            <textarea
+              value={form.message}
+              onChange={(event) => updateField("message", event.target.value)}
+              placeholder="Tell me about the project or opportunity..."
+              rows={4}
+              className="w-full resize-none rounded-xl bg-zinc-900/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:ring-1 focus:ring-violet-400/60"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <button
+              type="submit"
+              className="inline-flex h-12 items-center gap-2 rounded-xl bg-violet-600 px-5 text-sm font-semibold text-white transition hover:bg-violet-500"
+            >
+              Send message
+              <IconSend className="h-4 w-4" />
+            </button>
+
+            {status && <p className="text-sm text-zinc-500">{status}</p>}
+          </div>
+        </form>
       </div>
     </section>
   );

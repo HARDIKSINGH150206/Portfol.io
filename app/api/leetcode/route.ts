@@ -6,15 +6,15 @@ export const revalidate = 3600;
 export async function GET() {
   try {
     const stats = await getLeetCodeStats();
-    return NextResponse.json(stats, {
-      headers: {
-        "Cache-Control": "s-maxage=3600, stale-while-revalidate=86400",
-      },
-    });
+    return NextResponse.json(stats);
   } catch (error) {
-    console.error("LeetCode API failed:", error);
     return NextResponse.json(
-      { error: "LeetCode stats temporarily unavailable." },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "LeetCode stats temporarily unavailable.",
+      },
       { status: 500 },
     );
   }

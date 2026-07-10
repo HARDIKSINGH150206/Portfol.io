@@ -8,7 +8,6 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Projects from "@/components/Projects";
 import Resume from "@/components/Resume";
-import Skills from "@/components/Skills";
 
 export default function HomePage() {
   const githubUsername = process.env.GITHUB_USERNAME || "hardik-singh";
@@ -29,7 +28,6 @@ export default function HomePage() {
         githubUsername={githubUsername}
         leetcodeUsername={leetcodeUsername}
       />
-      <Skills />
       <Hackathons />
       <Resume />
       <Contact githubUsername={githubUsername} />

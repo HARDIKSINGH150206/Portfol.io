@@ -29,10 +29,12 @@ export default function SectionHeader({
         {eyebrow}
       </span>
       <div className="space-y-3">
-        <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+        <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-tight tracking-tight text-white">
           {title}
         </h2>
-        <p className="muted-copy text-base sm:text-lg">{description}</p>
+        <p className="max-w-3xl text-[clamp(1rem,1.5vw,1.25rem)] leading-8 text-zinc-400">
+          {description}
+        </p>
       </div>
     </motion.div>
   );

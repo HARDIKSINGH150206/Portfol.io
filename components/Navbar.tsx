@@ -7,7 +7,6 @@ const navItems = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Activity", href: "#activity" },
-  { label: "Skills", href: "#skills" },
   { label: "Hackathons", href: "#hackathons" },
   { label: "Resume", href: "#resume" },
 ];
@@ -21,7 +20,7 @@ export default function Navbar({ githubUsername }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/5 bg-black/80 backdrop-blur-xl">
-      <div className="container-shell grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-6">
+      <div className="container-shell grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-6 px-[var(--page-padding)]">
         <div className="hidden md:block" />
 
         <nav className="hidden items-center justify-center gap-8 md:flex">
@@ -72,7 +71,7 @@ export default function Navbar({ githubUsername }: NavbarProps) {
           id="mobile-navigation"
           className="border-t border-white/5 bg-black/95 md:hidden"
         >
-          <div className="container-shell flex flex-col gap-2 py-4">
+          <div className="container-shell flex flex-col gap-2 px-[var(--page-padding)] py-4">
             {navItems.map((item) => (
               <a
                 key={item.href}

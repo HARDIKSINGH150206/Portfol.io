@@ -25,11 +25,21 @@ export default function Hackathons() {
   return (
     <section id="hackathons" className="section-shell">
       <div className="container-shell">
-        <SectionHeader
-          eyebrow="Hackathons"
-          title="Fast execution under real constraints."
-          description="Hackathons are where speed stops being theoretical. They expose product judgment, technical clarity, and whether an idea can survive deadline pressure."
-        />
+        <div className="mb-14 max-w-4xl">
+          <h1 className="text-5xl font-semibold tracking-tight text-white md:text-6xl lg:text-7xl">
+            HACKATHONS
+          </h1>
+
+          <h2 className="mt-5 max-w-3xl text-[clamp(1rem,1.5vw,1.25rem)] font-medium leading-8 text-violet-400">
+            Fast execution under real constraints.
+          </h2>
+
+          <p className="mt-6 max-w-3xl text-base leading-8 text-zinc-400 md:text-lg">
+            Hackathons are where speed stops being theoretical. They expose product
+            judgment, technical clarity, and whether an idea can survive deadline
+            pressure.
+          </p>
+        </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
           {achievements.map((achievement, index) => (

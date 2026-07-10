@@ -65,7 +65,7 @@ export default function Hero({ githubUsername, profileImageSrc }: HeroProps) {
     },
     {
       title: "LinkedIn",
-      href: "https://www.linkedin.com/in/hardik-singh/",
+      href: "https://www.linkedin.com/in/hardik-singh-/",
       target: "_blank",
       rel: "noreferrer",
       icon: IconBrandLinkedin,
@@ -88,7 +88,7 @@ export default function Hero({ githubUsername, profileImageSrc }: HeroProps) {
   ];
 
   return (
-    <section id="home" className="relative overflow-hidden bg-black">
+    <section id="home" className="section-shell relative overflow-hidden bg-black">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute bottom-0 left-0 h-48 w-48 rounded-full bg-violet-600/10 blur-3xl"
@@ -99,7 +99,7 @@ export default function Hero({ githubUsername, profileImageSrc }: HeroProps) {
         className="pointer-events-none absolute right-[12%] top-[24%] hidden h-52 w-52 rounded-full bg-violet-500/5 blur-3xl lg:block"
       />
 
-      <div className="mx-auto max-w-6xl px-6 pb-12 pt-8 sm:px-8 md:pb-14 md:pt-10 lg:px-10 lg:pb-16 lg:pt-12">
+      <div className="container-shell">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -112,11 +112,11 @@ export default function Hero({ githubUsername, profileImageSrc }: HeroProps) {
             </span>
 
             <div className="mt-7">
-              <h1 className="text-5xl font-semibold leading-none tracking-tight text-white md:text-6xl lg:whitespace-nowrap lg:text-6xl xl:text-7xl">
+              <h1 className="text-[clamp(3rem,7vw,5.5rem)] font-semibold leading-none tracking-tight text-white lg:whitespace-nowrap">
                 HARDIK SINGH
               </h1>
 
-              <p className="mt-6 max-w-2xl text-xl leading-relaxed text-zinc-300 md:text-2xl">
+              <p className="mt-6 max-w-2xl text-[clamp(1rem,1.5vw,1.25rem)] leading-8 text-zinc-300">
                 I build intelligent, full-stack products that feel calm on the
                 surface and solid underneath — clean UI, reliable APIs,
                 practical AI, and systems designed to scale.

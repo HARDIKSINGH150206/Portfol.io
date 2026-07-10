@@ -1,4 +1,4 @@
-import { GitHubContributionStats, GitHubPinnedRepository } from "./types";
+import { ActivityDay, GitHubContributionStats, GitHubPinnedRepository } from "./types";
 
 const GITHUB_GRAPHQL_URL = "https://api.github.com/graphql";
 
@@ -145,15 +145,15 @@ export async function getPinnedRepositories() {
     const languages =
       totalLanguageSize > 0
         ? repository.languages.edges
-            .filter((edge) => edge.node !== null)
-            .map((edge) => ({
-              name: edge.node!.name,
-              color: edge.node!.color,
-              size: edge.size,
-              percentage: Number(
-                ((edge.size / totalLanguageSize) * 100).toFixed(1),
-              ),
-            }))
+          .filter((edge) => edge.node !== null)
+          .map((edge) => ({
+            name: edge.node!.name,
+            color: edge.node!.color,
+            size: edge.size,
+            percentage: Number(
+              ((edge.size / totalLanguageSize) * 100).toFixed(1),
+            ),
+          }))
         : [];
 
     return {
@@ -287,12 +287,17 @@ export async function getGitHubContributionStats() {
 
   const activeDays = days.filter((day) => day.contributionCount > 0).length;
   const { currentStreak, longestStreak } = computeStreaks(days);
+  const activityDays: ActivityDay[] = days.map((day) => ({
+    date: day.date,
+    count: day.contributionCount,
+  }));
 
   const stats: GitHubContributionStats = {
     totalContributions,
     currentStreak,
     longestStreak,
     activeDays,
+    days: activityDays,
   };
 
   return stats;

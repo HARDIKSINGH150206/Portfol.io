@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SectionHeader from "./SectionHeader";
 import ProjectCard from "./ProjectCard";
 import { GitHubPinnedRepository } from "@/lib/types";
 
@@ -83,15 +82,15 @@ export default function Projects() {
     <section id="projects" className="section-shell">
       <div className="container-shell">
         <div className="mb-12 max-w-4xl">
-          <p className="text-5xl font-semibold tracking-tight text-White-400 md:text-6xl">
+          <p className="text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-tight tracking-tight text-white">
             PROJECTS
           </p>
 
-          <h2 className="mt-5 max-w-3xl text-xl font-medium leading-8 text-violet-400 md:text-2xl">
+          <h2 className="mt-5 max-w-3xl text-[clamp(1rem,1.5vw,1.25rem)] font-medium leading-8 text-violet-400">
             Systems I’ve designed, built, and shipped.
           </h2>
 
-          <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-500 md:text-lg">
+          <p className="mt-4 max-w-3xl text-[clamp(1rem,1.5vw,1.125rem)] leading-7 text-zinc-500">
             From AI-powered tools to full-stack platforms, these projects show how I
             turn ideas into usable, reliable digital products. The section stays synced
             with the repositories I pin on GitHub.
