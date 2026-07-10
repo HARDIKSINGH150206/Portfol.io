@@ -50,10 +50,10 @@ export default function Contact() {
     <section id="contact" className="bg-black px-6 py-20 sm:px-8 lg:px-10">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1fr] lg:items-start">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-violet-400">
-            Contact
+          <p className="text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-tight tracking-tight text-white">
+            CONTACT
           </p>
-          <h2 className="mt-5 max-w-xl text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
+          <h2 className="mt-5 max-w-3xl text-[clamp(1rem,1.5vw,1.25rem)] font-medium leading-8 text-violet-400">
             Let&apos;s build something useful.
           </h2>
 
