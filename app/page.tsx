@@ -5,6 +5,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Hackathons from "@/components/Hackathons";
 import Hero from "@/components/Hero";
+import MultilingualIntro from "@/components/MultilingualIntro";
 import Navbar from "@/components/Navbar";
 import Projects from "@/components/Projects";
 import Resume from "@/components/Resume";
@@ -18,6 +19,7 @@ export default function HomePage() {
 
   return (
     <main id="content" className="relative overflow-x-hidden bg-black">
+      <MultilingualIntro />
       <Navbar githubUsername={githubUsername} />
       <Hero
         githubUsername={githubUsername}
