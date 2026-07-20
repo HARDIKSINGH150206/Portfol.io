@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const greetings = ["Hello", "नमस्ते", "Hola", "Bonjour", "こんにちは", "Ciao"];
+const greetings = ["Hello", "नमस्ते", "Olá", "Привет", "Bonjour", "こんにちは", "Ciao"];
 
 const WORD_DURATION = 650;
 const INTRO_DURATION = greetings.length * WORD_DURATION + 500;
